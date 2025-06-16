@@ -1,0 +1,57 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #f0f0f0;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form input,
+.form select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #333;
+  color: whitesmoke;
+}
+
+button {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+  background-color: #5579C6;
+  color: whitesmoke;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: #445ea6;
+}
+
+legend {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+form {
+    max-width: 25rem;
+    margin: 2rem auto 2rem auto;
+}
+
+fieldset {
+    border-radius: 10px;
+    background-color: #696969;
+}
+
+label {
+  font-weight: bold;
+}

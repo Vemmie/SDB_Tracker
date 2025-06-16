@@ -1,0 +1,31 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 5px;
+  margin-left: 9rem;
+}
+
+th, td {
+  border: 2px solid grey; 
+  padding: 5px 5px;
+  text-align: left;
+}
+
+thead {
+  background-color: darkgrey; 
+  color: white;
+}
+
+td {
+    background-color: #363737;
+}
+
+button {
+    margin: 1rem 1.5rem auto 1.5rem;
+    padding: 16px 16px 9px 16px;
+}
+
+.trashCell {
+    background-color: transparent;
+    border: none;
+}
