@@ -192,9 +192,14 @@ app.delete('/exercises', asyncHandler(async (req, res) => {
 
 // Support __dirname in ES modules
 if(process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(_dirname, "/client/dist")));
-    app.get("/*any", (req, res) => { // Try an explicit named wildcard
-        res.sendFile(path.join(_dirname, '..', 'client', 'dist', "index.html")); // Use safer path
+    // Correctly go up one level from 'server' to the project root, then down into 'client/dist'
+    const clientDistPath = path.join(_dirname, '..', 'client', 'dist');
+
+    app.use(express.static(clientDistPath)); // Use the correctly calculated path
+
+    app.get("/*any", (req, res) => {
+        // Serve index.html from the correctly calculated path
+        res.sendFile(path.join(clientDistPath, "index.html"));
     })
 }
 
