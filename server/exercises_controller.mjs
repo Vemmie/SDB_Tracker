@@ -49,67 +49,11 @@ function isValidDate(date) {
 }
 
 /**
- * Create a new user with the query parameters provided in the body
- */
-app.post('/exercises', asyncHandler(async (req, res) => {
-    const { name, weight, reps, unit, date } = req.body;
-
-    // Validate fields
-    if (!isValidWeight(weight)) {
-        return res.status(400).json({ error: 'Invalid weight: must be between 1 and 1500.' });
-    }
-
-    if (!isValidReps(reps)) {
-        return res.status(400).json({ error: 'Invalid reps: must be between 1 and 100.' });
-    }
-
-    if (!isValidDate(date)) {
-        return res.status(400).json({ error: 'Invalid date: must be in MM-DD-YY format with valid numbers.' });
-    }
-
-    // Create workout
-    const workout = await workouts.createWorkout(
-        name.toLowerCase(),
-        weight,
-        reps,
-        unit,
-        date
-    );
-
-    res.status(201).json(workout);
-}));
-
-/**
  * Gets work out based on the params provided in the URL
  */
 app.get('/exercises/name/:name', asyncHandler(async (req, res) => {
     const workoutName = req.params.name;
     const workout = await workouts.readWorkout({  name: workoutName });
-
-    if (!workout || workout.length === 0) {
-      return res.status(404).json({ error: 'Workout not found' });
-    }
-
-    res.status(200).json(workout); 
-}));
-/**
- * Gets by ID only used for testing
- */
-app.get('/exercises/:id', asyncHandler(async (req, res) => {
-    const workoutId = req.params.id;
-    const workout = await workouts.readWorkoutById(workoutId);
-
-    if (!workout) {
-        return res.status(404).json({ error: 'Workout not found' });
-    }
-
-    res.status(200).json(workout);
-}));
-/**
- * Gets all workouts based 
- */
-app.get('/exercises', asyncHandler(async (req, res) => {
-    const workout = await workouts.readWorkout();
 
     if (!workout || workout.length === 0) {
       return res.status(404).json({ error: 'Workout not found' });
@@ -177,6 +121,64 @@ app.delete('/exercises/:id', asyncHandler(async (req, res) => {
     } 
     return res.status(204).json({});
 }))
+
+/**
+ * Gets by ID only used for testing
+ */
+app.get('/exercises/:id', asyncHandler(async (req, res) => {
+    const workoutId = req.params.id;
+    const workout = await workouts.readWorkoutById(workoutId);
+
+    if (!workout) {
+        return res.status(404).json({ error: 'Workout not found' });
+    }
+
+    res.status(200).json(workout);
+}));
+
+/**
+ * Create a new user with the query parameters provided in the body
+ */
+app.post('/exercises', asyncHandler(async (req, res) => {
+    const { name, weight, reps, unit, date } = req.body;
+
+    // Validate fields
+    if (!isValidWeight(weight)) {
+        return res.status(400).json({ error: 'Invalid weight: must be between 1 and 1500.' });
+    }
+
+    if (!isValidReps(reps)) {
+        return res.status(400).json({ error: 'Invalid reps: must be between 1 and 100.' });
+    }
+
+    if (!isValidDate(date)) {
+        return res.status(400).json({ error: 'Invalid date: must be in MM-DD-YY format with valid numbers.' });
+    }
+
+    // Create workout
+    const workout = await workouts.createWorkout(
+        name.toLowerCase(),
+        weight,
+        reps,
+        unit,
+        date
+    );
+
+    res.status(201).json(workout);
+}));
+
+/**
+ * Gets all workouts based 
+ */
+app.get('/exercises', asyncHandler(async (req, res) => {
+    const workout = await workouts.readWorkout();
+
+    if (!workout || workout.length === 0) {
+      return res.status(404).json({ error: 'Workout not found' });
+    }
+
+    res.status(200).json(workout); 
+}));
 
 /**
  * Deletes workouts based on the query params provided in the URL
