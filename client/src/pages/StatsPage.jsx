@@ -9,7 +9,7 @@ function StatsPage() {
     const [avgIncrease, setAvgIncrease] = useState(null);
 
     const loadWorkouts = async() => {
-        const response = await fetch(`/exercise/${ lift }`);
+        const response = await fetch(`/exercise/name/${ lift }`);
         const workoutArray = await response.json();
         setWorkouts(workoutArray);
     }
