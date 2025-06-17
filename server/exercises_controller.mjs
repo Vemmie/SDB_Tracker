@@ -3,7 +3,6 @@ import express from 'express';
 import asyncHandler from 'express-async-handler';
 import * as workouts from './exercises_model.mjs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 // Author: Francis Truong
 
@@ -12,20 +11,15 @@ app.use(express.json())
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, async () => {
-    await workouts.connect()
-    console.log(`Server listening on port ${PORT}...`);
-});
+const _dirname = path.resolve(); // gives the current directory
 
 // Support __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// ======== Serve React build (production) ========
-const distPath = path.join(__dirname, '..', 'client', 'dist');
-app.use(express.static(distPath));
-
-
+if(process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(_dirname, "/client/dist")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
+    })
+}
 
 /**
  * Helper functions / for validation
@@ -61,11 +55,6 @@ function isValidDate(date) {
     const [mm, dd, yy] = date.split('-').map(Number);
     return mm >= 1 && mm <= 12 && dd >= 1 && dd <= 31;
 }
-
-// Serve React index.html for any unknown routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
-});
 
 /**
  * Create a new user with the query parameters provided in the body
@@ -206,3 +195,9 @@ app.delete('/exercises', asyncHandler(async (req, res) => {
     const deletedCount = await workouts.deleteWorkouts({ name: filter });
     return res.status(200).json({"deletedCount" : deletedCount});
 }))
+
+
+app.listen(PORT, async () => {
+    await workouts.connect()
+    console.log(`Server listening on port ${PORT}...`);
+});
