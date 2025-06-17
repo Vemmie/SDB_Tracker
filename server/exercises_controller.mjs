@@ -22,7 +22,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ======== Serve React build (production) ========
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+const distPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(distPath));
+
+
 
 /**
  * Helper functions / for validation
@@ -61,7 +64,7 @@ function isValidDate(date) {
 
 // Serve React index.html for any unknown routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 /**
