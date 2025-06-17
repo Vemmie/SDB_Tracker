@@ -193,7 +193,7 @@ app.delete('/exercises', asyncHandler(async (req, res) => {
 // Support __dirname in ES modules
 if(process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(_dirname, "/client/dist")));
-    app.get("*", (req, res) => {
+    app.get("/*", (req, res) => {
         res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
     })
 }
