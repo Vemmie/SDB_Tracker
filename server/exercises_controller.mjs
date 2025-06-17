@@ -13,14 +13,6 @@ const PORT = process.env.PORT || 5000;
 
 const _dirname = path.resolve(); // gives the current directory
 
-// Support __dirname in ES modules
-if(process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(_dirname, "/client/dist")));
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
-    })
-}
-
 /**
  * Helper functions / for validation
  * /
@@ -195,6 +187,14 @@ app.delete('/exercises', asyncHandler(async (req, res) => {
     const deletedCount = await workouts.deleteWorkouts({ name: filter });
     return res.status(200).json({"deletedCount" : deletedCount});
 }))
+
+// Support __dirname in ES modules
+if(process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(_dirname, "/client/dist")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(_dirname, "client", "dist", "index.html"));
+    })
+}
 
 
 app.listen(PORT, async () => {
